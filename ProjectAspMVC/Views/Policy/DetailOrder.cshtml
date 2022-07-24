@@ -1,0 +1,73 @@
+﻿@model HealthInsuranceService.Data.PolicyRequest
+
+@{
+    ViewBag.Title = "DetailOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (TempData["request"] != null)
+    {
+        
+    }
+}
+
+<div class="site-blocks-cover overlay" style="background-image: url(/Assets/images/hero_bg_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+
+            <div class="col-md-10">
+
+                <div class="row justify-content-center mb-4">
+                    <div class="col-md-10 text-center">
+                        <h1 data-aos="fade-up" class="mb-5">We do our  <span class="typed-words"></span></h1>
+
+                        <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn btn-primary btn-pill">Get Started</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <dl class="row">
+        <dt class="col-md-3">
+            Employee Name
+        </dt>
+
+        <dd class="col-md-9">
+            @Model.Employee.FirstName  @Model.Employee.LastName
+        </dd>
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.RequestDate)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.RequestDate)
+        </dd>
+
+
+        <dt class="col-md-3">
+            Policy Name
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.Policy.PolicyName)
+        </dd>
+        <dt class="col-md-3">
+            Policy Amount
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.Policy.Amount)
+        </dd>
+        <dt class="col-md-3">
+            EMI
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.Policy.EMI)
+        </dd>
+    </dl>
+    <button type="button" class="btn btn-primary btn-sm">Order</button>
+</div>
+<p>
+</p>

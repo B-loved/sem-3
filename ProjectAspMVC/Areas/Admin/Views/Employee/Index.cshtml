@@ -1,0 +1,146 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<HealthInsuranceService.Data.Employee>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-data__tool">
+    <div class="table-data__tool-left">
+        <div class="rs-select2--light rs-select2--md">
+            <form class="form-inline" action="/Admin/Employee/Index" method="get">
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control" name="search" placeholder="Search" value="@ViewBag.Search">
+                    <button class="btn btn-outline-warning ml-1 bg-white" type="submit">
+                        Filters
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="table-data__tool-right mr-5">
+        <a class="au-btn au-btn-icon au-btn--green au-btn--small" href="@Url.Action("Add", "Employee")">
+            <i class="zmdi zmdi-plus"></i>Add new Employee
+        </a>
+        <div class="rs-select2--dark rs-select2--md rs-select2--dark2">
+            <button class="btn btn-light btn-export">Export All Employees</button>
+        </div>
+    </div>
+</div>
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Designation
+                </th>
+                <th>
+                    Join Date
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Phone
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Designation)
+                    </td>
+                    <td>
+                        @string.Format("{0:dd-MM-yyyy}", item.JoinDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <div class="table-data-feature">
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Policies of Employee"
+                               href="@Url.Action("PoliciesOfEmp", "Employee", new { id = item.Id})">
+                                <i class="zmdi zmdi-view-list"></i>
+                            </a>
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Edit"
+                               href="@Url.Action("Edit", "Employee", new { id = item.Id})">
+                                <i class="zmdi zmdi-edit"></i>
+                            </a>
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Delete"
+                               href="@Url.Action("Delete", "Employee", new { id = item.Id})" onclick="return confirm('Are you sure?')">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            $(".page-item a").addClass("page-link");
+            $(".btn-export").click(function () {
+                window.open('/Admin/Report/ListEmployeePDF', '_blank');
+            });
+        })
+    </script>
+}
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.Search }), new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    UlElementClasses = new string[] { "pagination justify-content-center" }
+})

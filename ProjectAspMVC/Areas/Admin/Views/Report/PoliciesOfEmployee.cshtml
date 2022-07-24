@@ -1,0 +1,71 @@
+﻿@model IEnumerable<HealthInsuranceService.Data.PoliciesOnEmployee>
+
+@{
+    ViewBag.Title = "PoliciesOfEmployee";
+    Layout = "~/Areas/Admin/Views/Report/Index.cshtml";
+}
+
+<div class="container">
+    <div class="top-campaign">
+        <h3 class="title-3 m-b-30">All policies of Employee (@ViewBag.EmpName)</h3>
+        <div class="">
+            <table class="table table-top-campaign">
+                <thead>
+                    <tr>
+                        <th>
+                            Policy Name
+                        </th>
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                        <th>
+                            Duration
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            EMI
+                        </th>
+                    </tr>
+                    @{
+                        decimal totalAmount = 0;
+                        decimal totalEMI = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        totalAmount += item.Policy.Amount;
+                        totalEMI += item.Policy.EMI;
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Policy.PolicyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PolicyStartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PolicyEndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PolicyDuration)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Policy.Amount)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Policy.EMI)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="4"><b>Total</b></td>
+                        <td><b>@totalAmount</b></td>
+                        <td class="text-center"><b>@totalEMI</b></td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+</div>

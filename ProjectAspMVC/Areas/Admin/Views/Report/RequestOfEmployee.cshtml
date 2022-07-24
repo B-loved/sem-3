@@ -1,0 +1,96 @@
+﻿@model IEnumerable<HealthInsuranceService.Data.PolicyRequest>
+
+@{
+    ViewBag.Title = "RequestOfEmployee";
+    Layout = "~/Areas/Admin/Views/Report/Index.cshtml";
+}
+
+<div class="container">
+    <div class="top-campaign">
+        <h3 class="title-3 m-b-30">Requests from Employee (@ViewBag.EmpName)</h3>
+        <div class="">
+            <table class="table table-top-campaign">
+                <thead>
+                    <tr>
+                        <th>
+                            Request Id
+                        </th>
+                        <th>
+                            Request Date
+                        </th>
+                        <th>
+                            Emp Id
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Policy Id
+                        </th>
+                        <th>
+                            Policy Name
+                        </th>
+                        <th>
+                            Amout
+                        </th>
+                        <th>
+                            EMI
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.RequestId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequestDate)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                        </td>
+                        <td>
+                            @item.Employee.FirstName @item.Employee.LastName
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.PolicyId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Policy.PolicyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Policy.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Policy.EMI)
+                        </td>
+                        @if (item.Status == "Accepted")
+                        {
+                            <td style="color:green">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else if (item.Status == "Declined")
+                        {
+                            <td style="color:red">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

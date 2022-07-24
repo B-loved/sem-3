@@ -1,0 +1,101 @@
+﻿@model IEnumerable<HealthInsuranceService.Data.PoliciesOnEmployee>
+
+@{
+    ViewBag.Title = "PoliciesOfEmp";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-data__tool">
+    <div class="table-data__tool-left">
+        <div class="rs-select2--light rs-select2--md">
+
+            @if (Model.Count() > 0)
+            {
+                <div>
+                    Policies of @Model.FirstOrDefault().Employee.FirstName @Model.FirstOrDefault().Employee.LastName
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="table-data__tool-right">
+        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+            <button class="btn btn-light float-right btn-export-request">Export requests of Employees</button>
+            <button class="btn btn-light float-right mt-2 btn-export">Export policies of this Employee</button>
+        </div>
+    </div>
+</div>
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Policy.PolicyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PolicyStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PolicyEndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PolicyDuration)
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    EMI
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Policy.PolicyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PolicyStartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PolicyEndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PolicyDuration)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Policy.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Policy.EMI)
+                    </td>
+                    <td>
+                        <div class="table-data-feature">
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Delete"
+                               href="@Url.Action("DeletePolicyOfEmployee", "Employee", new { policyId = item.PolicyId})" onclick="return confirm('Are you sure?')">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            $(".btn-export").click(function () {
+                window.open('/Admin/Report/PoliciesOfEmployeePDF/@ViewBag.EmpId', '_blank');
+            });
+            
+            $(".btn-export-request").click(function () {
+                window.open('/Admin/Report/RequestOfEmployeePDF/@ViewBag.EmpId', '_blank');
+            });
+
+        });
+    </script>
+}

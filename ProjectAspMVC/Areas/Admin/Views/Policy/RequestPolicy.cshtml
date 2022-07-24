@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "RequestPolicy";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2 class="title-5 m-b-25">List of policies Requested</h2>
+<div class="table-data__tool">
+    <div class="table-data__tool-left">
+        <div class="rs-select2--light rs-select2--md">
+            <select class="js-select2" name="mode" id="mode">
+                <option value="waiting">Waiting</option>
+                <option value="All">All requests</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Declined">Declined</option>
+            </select>
+            <div class="dropDownSelect2"></div>
+        </div>
+    </div>
+    <div class="table-data__tool-right">
+        <form action="/Admin/Report/RequestByDatePDF" method="post" class="form-inline" target="_blank">
+            <label style="color: green">Start Date</label>
+            <input class="form-control ml-2" type="date" name="StartDate" id="StartDate" value="" />
+            <label style="color: red" class="ml-2">End Date</label>
+            <input class="form-control ml-2" type="date" name="EndDate" id="EndDate" value="" />
+            <button class="btn btn-light ml-2 btn-export" type="submit">Export</button>
+        </form>
+    </div>
+</div>
+
+<div class="data">
+
+</div>
+@section scripts{
+    <script>
+        var mode = "waiting";
+        var page = 1;
+        $(document).on('DOMNodeInserted', function (e) {
+            $(".page-item a").addClass("page-link");
+            
+        });
+        $(document).on('click', '.page-item a', function () {
+            if ($(this).text() == '»') {
+                page++;
+            }
+            else if ($(this).text() == '«') {
+                page--;
+            } else {
+                page = $(this).text();
+            }
+            Load(mode, page);
+        });
+        $(function () {
+            Load(mode, 1);
+            $("#mode").on('change', function () {
+                mode = $('#mode').val();
+                Load(mode,1);
+            });
+        });
+        function Load(status, page) {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Policy/GetData?status=' + status + '&page=' + page,
+                success: function (res) {
+                    $(".data").html(res);
+                }
+            });
+        }
+    </script>
+}

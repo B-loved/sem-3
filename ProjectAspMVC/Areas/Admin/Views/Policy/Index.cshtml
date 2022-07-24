@@ -1,0 +1,108 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<HealthInsuranceService.Data.Policy>
+
+@{
+    ViewBag.Title = "Policy";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2 class="title-5 m-b-25">List of Policies</h2>
+<div class="table-data__tool">
+    <div class="table-data__tool-left">
+        <div class="table-data__tool-left">
+            <div class="rs-select2--light rs-select2--md">
+                <form class="form-inline" action="/Admin/Policy/Index" method="get">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="search" placeholder="Search" value="@ViewBag.Search">
+                        <button class="btn btn-outline-warning ml-1 bg-white" type="submit">
+                            Filters
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="table-data__tool-right">
+        <a class="au-btn au-btn-icon au-btn--green au-btn--small" href="@Url.Action("AddPolicy", "Policy")">
+            <i class="zmdi zmdi-plus"></i>Add new Policy
+        </a>
+    </div>
+</div>
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                   Tên bảo hiểm
+                </th>
+                <th>
+                    Mô tả
+                </th>
+                <th>
+                    Giá
+                </th>
+                <th>
+                    EMI
+                </th>
+                <th>
+                    Ten công ty
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="tr-shadow">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PolicyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EMI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company.CompanyName)
+                    </td>
+                    <td>
+                        <div class="table-data-feature">
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Edit"
+                               href="@Url.Action("EditPolicy", "Policy", new { id = item.Id })">
+                                <i class="zmdi zmdi-edit"></i>
+                            </a>
+                            <a class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you sure?')"
+                               href="@Url.Action("DeletePolicy", "Policy", new { id = item.Id })">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="spacer"></tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            $(".page-item a").addClass("page-link");
+        })
+    </script>
+}
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.Search }), new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    UlElementClasses = new string[] { "pagination justify-content-center" }
+})
